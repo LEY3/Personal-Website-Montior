@@ -1,0 +1,35 @@
+# Personal website monitor - checks if sites I use are up
+# Built by Jake Meuffels as part of learning cloud monitoring
+from datetime import datetime
+import requests
+print("Scan run at: " + str(datetime.now()))
+# List of websites to check
+websites =[
+    "https://ebay.com",
+    "https://github.com",
+    "https://amazon.com",
+    "https://evastore.jp",
+    "https://grok.com",
+    "https://thissitedoesnotexistlol.com"
+]
+def check_websites(site_list):
+    amount_online = 0
+    amount_offline = 0
+    
+    for i in site_list:
+        try:
+            response = requests.get(i, timeout=5)
+            if response.status_code == 200:
+                print(i + " is returning request.")
+                amount_online += 1
+            else:
+                print(i + " returned status code: " + str(response.status_code))
+                amount_offline += 1
+        except:
+            print(i + " is not returning request.")
+            amount_offline += 1
+    
+    print("Websites online: " + str(amount_online))
+    print("Websites offline: " + str(amount_offline))
+
+check_websites(websites)
